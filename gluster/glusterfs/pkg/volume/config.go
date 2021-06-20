@@ -39,7 +39,7 @@ type ProvisionerConfig struct {
 
 // NewProvisionerConfig create ProvisionerConfig from parameters of StorageClass
 func NewProvisionerConfig(pvName string, params map[string]string) (*ProvisionerConfig, error) {
-	var config ProvisionerConfig
+	var configobj ProvisionerConfig
 	var err error
 
 	// Set default volume type
@@ -68,19 +68,19 @@ func NewProvisionerConfig(pvName string, params map[string]string) (*Provisioner
 		}
 	}
 
-	config.BrickRootPaths = brickRootPaths
-	config.VolumeName = pvName
-	config.VolumeType = volumeType
-	config.Namespace = namespace
-	config.LabelSelector = selector
-	config.ForceCreate = forceCreate
+	configobj.BrickRootPaths = brickRootPaths
+	configobj.VolumeName = pvName
+	configobj.VolumeType = volumeType
+	configobj.Namespace = namespace
+	configobj.LabelSelector = selector
+	configobj.ForceCreate = forceCreate
 
-	err = config.validate()
+	err = configobj.validate()
 	if err != nil {
 		return nil, err
 	}
 
-	return &config, nil
+	return &configobj, nil
 }
 
 func parseBrickRootPaths(param string) ([]BrickRootPath, error) {
@@ -99,8 +99,8 @@ func parseBrickRootPaths(param string) ([]BrickRootPath, error) {
 	return brickRootPaths, nil
 }
 
-func (config *ProvisionerConfig) validate() error {
-	if len(config.BrickRootPaths) == 0 {
+func (configobj *ProvisionerConfig) validate() error {
+	if len(configobj.BrickRootPaths) == 0 {
 		return fmt.Errorf("brickRootPaths are not specified")
 	}
 
